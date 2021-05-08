@@ -30,14 +30,14 @@
         ````text
         methods:  get 
             url:  http://127.0.0.1:8787/wallet/sigAny
-          param:  content(string)=签名内容 & address(string) = t3qczlflcf45vx3ay67yxvd7gwxm6zfyke7jnskt46phg3bbvmxcmyvl3cd4hac7zjfvcx4wa4xme45sw47lea
+          param:  content(string)=SignatureContent & address(string) = t3qczlflcf45vx3ay67yxvd7gwxm6zfyke7jnskt46phg3bbvmxcmyvl3cd4hac7zjfvcx4wa4xme45sw47lea
      
 ## 二、Signature services
    * Off-line signature
      ````text
      methods:  get 
          url:  http://127.0.0.1:8787/wallet/sig
-       param:  message(string) = 消息体
+       param:  message(string) = message
    * Sign the body of the message offline [upload the body of the message that needs to be signed: message.json]  
      ````text
       type message struct {
