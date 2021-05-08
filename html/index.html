@@ -1,0 +1,32 @@
+{{define "index.html"}}
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>离线签名页</title>
+    </head>
+
+    <body>
+    <p for="male">请导入私钥：</p>
+    <textarea cols="100" rows="2" id="key" name="key"></textarea>
+    <button type="button" id="c1" onclick="importPrivateKey()">导入私钥</button>
+
+    <p for="male">请输入签名消息体：</p>
+    <textarea cols="100" rows="10" id="contactus" name="contactus"></textarea>
+    <button type="button" id="c1" onclick="clickHello()">开始签名</button>
+
+    <script type="text/javascript">
+        function importPrivateKey() {
+            location.href = "http://127.0.0.1:8787/wallet/import?privateKey=" + document.getElementById("key").value
+        }
+
+        function clickHello() {
+            location.href = "http://127.0.0.1:8787/wallet/sig?message=" + document.getElementById("contactus").value
+        }
+    </script>
+    </body>
+
+    </html>
+
+{{end}}
