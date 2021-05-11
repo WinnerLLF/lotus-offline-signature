@@ -5,9 +5,10 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"lotus-offline-signature/types"
 	"github.com/filecoin-project/go-address"
 	"github.com/gin-gonic/gin"
+	"lotus-offline-signature/types"
+	"net/http"
 	"os"
 )
 
@@ -107,7 +108,7 @@ func (wd *walletDealWith) sig(c *gin.Context) {
 	signature, err := wt.Sign(context.TODO(), msg.From, msg.Cid().Bytes())
 	if err != nil {
 		fmt.Printf("Sign err：%v\n", err)
-		c.JSON(error_code, err)
+		c.JSON(http.StatusBadRequest, err)
 		return
 	}
 
@@ -116,7 +117,7 @@ func (wd *walletDealWith) sig(c *gin.Context) {
 		Signature: *signature,
 	}
 
-	c.JSON(success_code, signedMessage)
+	c.JSON(http.StatusOK, signedMessage)
 }
 
 /**
@@ -131,26 +132,26 @@ func (wd *walletDealWith) sigAny(c *gin.Context) {
 	addr, err := address.NewFromString(walletAdd)
 	if err != nil {
 		fmt.Printf("NewFromString err：%v\n", err)
-		c.JSON(error_code, err)
+		c.JSON(http.StatusBadRequest, err)
 		return
 	}
 
 	msg, err := hex.DecodeString(content)
 	if err != nil {
-		c.JSON(error_code, err)
+		c.JSON(http.StatusBadRequest, err)
 		return
 	}
 
 	signature, err := wt.Sign(context.TODO(), addr, msg)
 	if err != nil {
 		fmt.Printf("Sign err：%v\n", err)
-		c.JSON(error_code, err)
+		c.JSON(http.StatusBadRequest, err)
 		return
 	}
 
 	sigBytes := append([]byte{byte(signature.Type)}, signature.Data...)
 
-	c.JSON(success_code, hex.EncodeToString(sigBytes))
+	c.JSON(http.StatusOK, hex.EncodeToString(sigBytes))
 }
 
 /**
