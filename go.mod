@@ -6,12 +6,12 @@ require (
 	github.com/filecoin-project/filecoin-ffi v0.30.4-0.20200910194244-f640612a1a1f
 	github.com/filecoin-project/go-address v0.0.5
 	github.com/filecoin-project/go-crypto v0.0.0-20191218222705-effae4ea9f03
-	github.com/filecoin-project/go-state-types v0.1.0
-	github.com/filecoin-project/lotus v1.9.0
+	github.com/filecoin-project/go-state-types v0.1.1-0.20210506134452-99b279731c48
+	github.com/filecoin-project/lotus v1.10.0
 	github.com/gin-gonic/gin v1.6.3
 	github.com/ipfs/go-block-format v0.0.3
 	github.com/ipfs/go-cid v0.0.7
-	github.com/ipfs/go-log/v2 v2.1.2-0.20200626104915-0016c0b4b3e4
+	github.com/ipfs/go-log/v2 v2.1.3
 	github.com/minio/blake2b-simd v0.0.0-20160723061019-3f5f724cb5b1
 	github.com/stretchr/testify v1.7.0
 	github.com/syndtr/goleveldb v1.0.0
