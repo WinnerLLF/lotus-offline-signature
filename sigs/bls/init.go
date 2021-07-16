@@ -21,12 +21,6 @@ type AggregateSignature = ffi.Signature
 
 type blsSigner struct{}
 
-/**
- * @Description:
- * @receiver blsSigner
- * @return []byte
- * @return error
- */
 func (blsSigner) GenPrivate() ([]byte, error) {
 	// Generate 32 bytes of randomness
 	var ikm [32]byte
@@ -39,13 +33,6 @@ func (blsSigner) GenPrivate() ([]byte, error) {
 	return sk[:], nil
 }
 
-/**
- * @Description:
- * @receiver blsSigner
- * @param priv
- * @return []byte
- * @return error
- */
 func (blsSigner) ToPublic(priv []byte) ([]byte, error) {
 	if priv == nil || len(priv) != ffi.PrivateKeyBytes {
 		return nil, fmt.Errorf("bls signature invalid private key")
@@ -59,14 +46,6 @@ func (blsSigner) ToPublic(priv []byte) ([]byte, error) {
 	return pubkey[:], nil
 }
 
-/**
- * @Description:
- * @receiver blsSigner
- * @param p
- * @param msg
- * @return []byte
- * @return error
- */
 func (blsSigner) Sign(p []byte, msg []byte) ([]byte, error) {
 	if p == nil || len(p) != ffi.PrivateKeyBytes {
 		return nil, fmt.Errorf("bls signature invalid private key")
@@ -102,9 +81,6 @@ func (blsSigner) Verify(sig []byte, a address.Address, msg []byte) error {
 	return nil
 }
 
-/**
- * @Description:
- */
 func init() {
 	sigs.RegisterSignature(crypto.SigTypeBLS, blsSigner{})
 }
