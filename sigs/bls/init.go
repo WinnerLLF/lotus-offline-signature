@@ -80,14 +80,6 @@ func (blsSigner) Sign(p []byte, msg []byte) ([]byte, error) {
 	return sig[:], nil
 }
 
-/**
- * @Description:
- * @receiver blsSigner
- * @param sig
- * @param a
- * @param msg
- * @return error
- */
 func (blsSigner) Verify(sig []byte, a address.Address, msg []byte) error {
 	payload := a.Payload()
 	if sig == nil || len(sig) != ffi.SignatureBytes || len(payload) != ffi.PublicKeyBytes {
