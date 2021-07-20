@@ -43,9 +43,7 @@ func main() {
 	}
 }
 
-/**
- * @Description: A method to generate static files
- */
+// A method to generate static files
 func GetGenerateHtml() {
 	//1.Access to the template
 	contenstTmp, err := template.ParseFiles(filepath.Join(templatePath, "index.html"))
@@ -58,12 +56,7 @@ func GetGenerateHtml() {
 	generateStaticHtml(contenstTmp, fileName, gin.H{})
 }
 
-/**
- * @Description: Generate static files
- * @param template
- * @param fileName
- * @param product
- */
+// Generate static files
 func generateStaticHtml(template *template.Template, fileName string, product map[string]interface{}) {
 	// Determine whether the static file exists
 	if exist(fileName) {
@@ -81,11 +74,7 @@ func generateStaticHtml(template *template.Template, fileName string, product ma
 	template.Execute(file, &product)
 }
 
-/**
- * @Description: Determine whether the file exists
- * @param fileName
- * @return bool
- */
+// Determine whether the file exists
 func exist(fileName string) bool {
 	_, err := os.Stat(fileName)
 	return err == nil || os.IsExist(err)
