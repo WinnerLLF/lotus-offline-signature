@@ -55,31 +55,6 @@ func (m *Message) ValueReceived() abi.TokenAmount {
 	return m.Value
 }
 
-/**
- * @Description:
- * @param b
- * @return *Message
- * @return error
- */
-func DecodeMessage(b []byte) (*Message, error) {
-	var msg Message
-	if err := msg.UnmarshalCBOR(bytes.NewReader(b)); err != nil {
-		return nil, err
-	}
-
-	if msg.Version != MessageVersion {
-		return nil, fmt.Errorf("decoded message had incorrect version (%d)", msg.Version)
-	}
-
-	return &msg, nil
-}
-
-/**
- * @Description:
- * @receiver m
- * @return []byte
- * @return error
- */
 func (m *Message) Serialize() ([]byte, error) {
 	buf := new(bytes.Buffer)
 	if err := m.MarshalCBOR(buf); err != nil {
@@ -88,11 +63,6 @@ func (m *Message) Serialize() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-/**
- * @Description:
- * @receiver m
- * @return int
- */
 func (m *Message) ChainLength() int {
 	ser, err := m.Serialize()
 	if err != nil {
@@ -101,12 +71,6 @@ func (m *Message) ChainLength() int {
 	return len(ser)
 }
 
-/**
- * @Description:
- * @receiver m
- * @return block.Block
- * @return error
- */
 func (m *Message) ToStorageBlock() (block.Block, error) {
 	data, err := m.Serialize()
 	if err != nil {
@@ -121,11 +85,6 @@ func (m *Message) ToStorageBlock() (block.Block, error) {
 	return block.NewBlockWithCid(data, c)
 }
 
-/**
- * @Description:
- * @receiver m
- * @return cid.Cid
- */
 func (m *Message) Cid() cid.Cid {
 	b, err := m.ToStorageBlock()
 	if err != nil {
@@ -135,31 +94,14 @@ func (m *Message) Cid() cid.Cid {
 	return b.Cid()
 }
 
-/**
- * @Description:
- * @receiver m
- * @return *Message
- */
 func (m *Message) VMMessage() *Message {
 	return m
 }
 
-/**
- * @Description:
- * @receiver m
- * @param o
- * @return bool
- */
 func (m *Message) Equals(o *Message) bool {
 	return m.Cid() == o.Cid()
 }
 
-/**
- * @Description:
- * @receiver m
- * @param o
- * @return bool
- */
 func (m *Message) EqualCall(o *Message) bool {
 	m1 := *m
 	m2 := *o

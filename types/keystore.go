@@ -6,7 +6,6 @@ import (
 
 var (
 	ErrKeyInfoNotFound = fmt.Errorf("key info not found")
-	ErrKeyExists       = fmt.Errorf("key already exists")
 )
 
 // KeyInfo is used for storing keys in KeyStore
@@ -15,9 +14,7 @@ type KeyInfo struct {
 	PrivateKey []byte
 }
 
-/**
- * @Description: KeyStore is used for storing secret keys
- */
+// KeyStore is used for storing secret keys
 type KeyStore interface {
 	// List lists all the keys stored in the KeyStore
 	List() ([]string, error)
