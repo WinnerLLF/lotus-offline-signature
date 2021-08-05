@@ -36,12 +36,6 @@ type Wallet struct {
 	lk sync.Mutex
 }
 
-/**
- * @Description:
- * @param keystore
- * @return *Wallet
- * @return error
- */
 func NewWallet(keystore types.KeyStore) (*Wallet, error) {
 	w := &Wallet{
 		keys:     make(map[address.Address]*Key),
@@ -51,34 +45,10 @@ func NewWallet(keystore types.KeyStore) (*Wallet, error) {
 	return w, nil
 }
 
-/**
- * @Description:
- * @param keys
- * @return *Wallet
- */
-func KeyWallet(keys ...*Key) *Wallet {
-	m := make(map[address.Address]*Key)
-	for _, key := range keys {
-		m[key.Address] = key
-	}
-
-	return &Wallet{
-		keys: m,
-	}
-}
-
-/**
- * @Description:
- * @receiver w
- * @param ctx
- * @param addr
- * @param msg
- * @return *crypto.Signature
- * @return error
- */
 func (w *Wallet) Sign(ctx context.Context, addr address.Address, msg []byte) (*crypto.Signature, error) {
 	ki, err := w.findKey(addr)
 	if err != nil {
+		log.Debug("data info:",ctx)
 		return nil, err
 	}
 	if ki == nil {
@@ -88,13 +58,6 @@ func (w *Wallet) Sign(ctx context.Context, addr address.Address, msg []byte) (*c
 	return sigs.Sign(ActSigType(ki.Type), ki.PrivateKey, msg)
 }
 
-/**
- * @Description:
- * @receiver w
- * @param addr
- * @return *Key
- * @return error
- */
 func (w *Wallet) findKey(addr address.Address) (*Key, error) {
 	w.lk.Lock()
 	defer w.lk.Unlock()
@@ -123,13 +86,6 @@ func (w *Wallet) findKey(addr address.Address) (*Key, error) {
 	return k, nil
 }
 
-/**
- * @Description:
- * @receiver w
- * @param addr
- * @return *types.KeyInfo
- * @return error
- */
 func (w *Wallet) Export(addr address.Address) (*types.KeyInfo, error) {
 	k, err := w.findKey(addr)
 	if err != nil {
@@ -139,13 +95,6 @@ func (w *Wallet) Export(addr address.Address) (*types.KeyInfo, error) {
 	return &k.KeyInfo, nil
 }
 
-/**
- * @Description:
- * @receiver w
- * @param ki
- * @return address.Address
- * @return error
- */
 func (w *Wallet) Import(ki *types.KeyInfo) (address.Address, error) {
 	w.lk.Lock()
 	defer w.lk.Unlock()
@@ -162,12 +111,6 @@ func (w *Wallet) Import(ki *types.KeyInfo) (address.Address, error) {
 	return k.Address, nil
 }
 
-/**
- * @Description:
- * @receiver w
- * @return []address.Address
- * @return error
- */
 func (w *Wallet) ListAddrs() ([]address.Address, error) {
 	all, err := w.keystore.List()
 	if err != nil {
@@ -191,12 +134,6 @@ func (w *Wallet) ListAddrs() ([]address.Address, error) {
 	return out, nil
 }
 
-/**
- * @Description:
- * @receiver w
- * @return address.Address
- * @return error
- */
 func (w *Wallet) GetDefault() (address.Address, error) {
 	w.lk.Lock()
 	defer w.lk.Unlock()
@@ -214,12 +151,6 @@ func (w *Wallet) GetDefault() (address.Address, error) {
 	return k.Address, nil
 }
 
-/**
- * @Description:
- * @receiver w
- * @param a
- * @return error
- */
 func (w *Wallet) SetDefault(a address.Address) error {
 	w.lk.Lock()
 	defer w.lk.Unlock()
@@ -242,12 +173,6 @@ func (w *Wallet) SetDefault(a address.Address) error {
 	return nil
 }
 
-/**
- * @Description:
- * @param typ
- * @return *Key
- * @return error
- */
 func GenerateKey(typ crypto.SigType) (*Key, error) {
 	pk, err := sigs.Generate(typ)
 	if err != nil {
@@ -260,13 +185,6 @@ func GenerateKey(typ crypto.SigType) (*Key, error) {
 	return NewKey(ki)
 }
 
-/**
- * @Description:
- * @receiver w
- * @param typ
- * @return address.Address
- * @return error
- */
 func (w *Wallet) GenerateKey(typ crypto.SigType) (address.Address, error) {
 	w.lk.Lock()
 	defer w.lk.Unlock()
@@ -295,13 +213,6 @@ func (w *Wallet) GenerateKey(typ crypto.SigType) (address.Address, error) {
 	return k.Address, nil
 }
 
-/**
- * @Description:
- * @receiver w
- * @param addr
- * @return bool
- * @return error
- */
 func (w *Wallet) HasKey(addr address.Address) (bool, error) {
 	k, err := w.findKey(addr)
 	if err != nil {
@@ -310,12 +221,6 @@ func (w *Wallet) HasKey(addr address.Address) (bool, error) {
 	return k != nil, nil
 }
 
-/**
- * @Description:
- * @receiver w
- * @param addr
- * @return error
- */
 func (w *Wallet) DeleteKey(addr address.Address) error {
 	k, err := w.findKey(addr)
 	if err != nil {
@@ -340,12 +245,6 @@ type Key struct {
 	Address   address.Address
 }
 
-/**
- * @Description:
- * @param keyinfo
- * @return *Key
- * @return error
- */
 func NewKey(keyinfo types.KeyInfo) (*Key, error) {
 	k := &Key{
 		KeyInfo: keyinfo,
@@ -375,11 +274,6 @@ func NewKey(keyinfo types.KeyInfo) (*Key, error) {
 	return k, nil
 }
 
-/**
- * @Description:
- * @param typ
- * @return string
- */
 func kstoreSigType(typ crypto.SigType) string {
 	switch typ {
 	case crypto.SigTypeBLS:
@@ -391,11 +285,6 @@ func kstoreSigType(typ crypto.SigType) string {
 	}
 }
 
-/**
- * @Description:
- * @param typ
- * @return crypto.SigType
- */
 func ActSigType(typ string) crypto.SigType {
 	switch typ {
 	case KTBLS:

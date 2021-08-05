@@ -17,12 +17,6 @@ func init() {
 	}
 }
 
-/**
- * @Description:
- * @param name
- * @return *leveldb.DB
- * @return error
- */
 func initDB(name string) (*leveldb.DB, error) {
 	o := &opt.Options{
 		Filter: filter.NewBloomFilter(10),
@@ -35,12 +29,6 @@ func initDB(name string) (*leveldb.DB, error) {
 	return db, err
 }
 
-/**
- * @Description:
- * @param key
- * @param value
- * @return error
- */
 func WriteDB(key, value string) error {
 	batch := new(leveldb.Batch)
 	batch.Put([]byte(key), []byte(value))
@@ -52,11 +40,6 @@ func WriteDB(key, value string) error {
 	return nil
 }
 
-/**
- * @Description:
- * @param key
- * @return []byte
- */
 func ReadDB(key string) []byte {
 	data, err := db.Get([]byte(key), nil)
 	if err != nil {
@@ -67,10 +50,6 @@ func ReadDB(key string) []byte {
 	return data
 }
 
-/**
- * @Description:
- * @return []string
- */
 func ReadListDB() []string {
 	var privateKey []string
 	iter := db.NewIterator(nil, nil)
@@ -87,11 +66,6 @@ func ReadListDB() []string {
 	return privateKey
 }
 
-/**
- * @Description:
- * @param key
- * @return error
- */
 func DeleteByKey(key string) error {
 	if err := db.Delete([]byte(key), nil); err != nil {
 		return err

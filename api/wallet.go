@@ -4,10 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-/**
- * @Description:
- * @return *gin.Engine
- */
 func RouterApiServer() *gin.Engine {
 	// Create restful handler (using Gin)
 	srv := new(walletDealWith)

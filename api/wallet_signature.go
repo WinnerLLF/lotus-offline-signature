@@ -12,10 +12,6 @@ import (
 	"os"
 )
 
-/**
- * @Description:
- * @return types.Message
- */
 func readMessage() types.Message {
 	type message struct {
 		Version    int64
@@ -57,10 +53,10 @@ func readMessage() types.Message {
 		To:         to,
 		From:       from,
 		Nonce:      msg.Nonce,
-		Value:      Bigint_Transform(msg.Value),
+		Value:      BigintTransform(msg.Value),
 		GasLimit:   int64(msg.GasLimit),
-		GasFeeCap:  Bigint_Transform(msg.GasFeeCap),
-		GasPremium: Bigint_Transform(msg.GasPremium),
+		GasFeeCap:  BigintTransform(msg.GasFeeCap),
+		GasPremium: BigintTransform(msg.GasPremium),
 		Method:     0,
 		Params:     nil,
 	}
@@ -68,10 +64,6 @@ func readMessage() types.Message {
 	return msge
 }
 
-/**
- * @Description:
- * @param msg
- */
 func writeMessage(msg string) {
 	f, err := os.Create(fmt.Sprintf("%v", "./json/message.json"))
 	if err != nil {
@@ -92,11 +84,7 @@ func writeMessage(msg string) {
 	}
 }
 
-/**
- * @Description: msg sig
- * @receiver wd
- * @param c
- */
+// sig msg sig
 func (wd *walletDealWith) sig(c *gin.Context) {
 	// write message
 	addWallet := c.Query("message")
@@ -120,11 +108,6 @@ func (wd *walletDealWith) sig(c *gin.Context) {
 	c.JSON(http.StatusOK, signedMessage)
 }
 
-/**
- * @Description:
- * @receiver wd
- * @param c
- */
 func (wd *walletDealWith) sigAny(c *gin.Context) {
 	content := c.Query("content")
 	walletAdd := c.Query("address")
@@ -154,12 +137,7 @@ func (wd *walletDealWith) sigAny(c *gin.Context) {
 	c.JSON(http.StatusOK, hex.EncodeToString(sigBytes))
 }
 
-/**
- * @Description:
- * @param value
- * @return types.BigInt
- */
-func Bigint_Transform(value string) types.BigInt {
+func BigintTransform(value string) types.BigInt {
 	bigInt, err := types.BigFromString(value)
 	if err != nil {
 		return bigInt

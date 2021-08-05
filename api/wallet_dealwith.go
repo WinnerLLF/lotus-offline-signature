@@ -46,11 +46,7 @@ func InitCache() {
 	}
 }
 
-/**
- * @Description: wallet new [sigType = bls、secp256k1]
- * @receiver wd
- * @param c
- */
+// newWallet wallet new [sigType = bls、secp256k1]
 func (wd *walletDealWith) newWallet(c *gin.Context) {
 	typeSig := c.Query("sigType")
 	if len(wd.replace(typeSig)) == 0 {
@@ -84,11 +80,7 @@ func (wd *walletDealWith) newWallet(c *gin.Context) {
 	c.JSON(http.StatusOK, wg.String())
 }
 
-/**
- * @Description: wallet list
- * @receiver wd
- * @param c
- */
+// walletList wallet list
 func (wd *walletDealWith) walletList(c *gin.Context) {
 	addrList, err := wt.ListAddrs()
 	if err != nil {
@@ -104,11 +96,7 @@ func (wd *walletDealWith) walletList(c *gin.Context) {
 	c.JSON(http.StatusOK, walletList)
 }
 
-/**
- * @Description: wallet import [privateKey = xxx]
- * @receiver wd
- * @param c
- */
+// walletImport wallet import [privateKey = xxx]
 func (wd *walletDealWith) walletImport(c *gin.Context) {
 	privateKey := c.Query("privateKey")
 	if len(wd.replace(privateKey)) == 0 {
@@ -135,11 +123,7 @@ func (wd *walletDealWith) walletImport(c *gin.Context) {
 	c.JSON(http.StatusOK, addr.String())
 }
 
-/**
- * @Description: wallet export [address = xxx]
- * @receiver wd
- * @param c
- */
+// walletExport wallet export [address = xxx]
 func (wd *walletDealWith) walletExport(c *gin.Context) {
 	addWallet := c.Query("address")
 	if len(wd.replace(addWallet)) == 0 {
@@ -169,11 +153,7 @@ func (wd *walletDealWith) walletExport(c *gin.Context) {
 	c.JSON(http.StatusOK, keyInfo)
 }
 
-/**
- * @Description: wallet delete [address = xxx]
- * @receiver wd
- * @param c
- */
+// walletDelete wallet delete [address = xxx]
 func (wd *walletDealWith) walletDelete(c *gin.Context) {
 	addWallet := c.Query("address")
 	if len(wd.replace(addWallet)) == 0 {
@@ -202,12 +182,7 @@ func (wd *walletDealWith) walletDelete(c *gin.Context) {
 	c.JSON(http.StatusOK, "delete walletAddress success!")
 }
 
-/**
- * @Description: replace string
- * @receiver wd
- * @param str
- * @return string
- */
+// replace string
 func (wd *walletDealWith) replace(str string) string {
 	return strings.Replace(str, " ", "", -1)
 }
