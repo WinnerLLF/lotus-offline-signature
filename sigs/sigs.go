@@ -26,13 +26,7 @@ func Sign(sigType crypto.SigType, privkey []byte, msg []byte) (*crypto.Signature
 	}, nil
 }
 
-/**
- * @Description: Verify verifies signatures
- * @param sig
- * @param addr
- * @param msg
- * @return error
- */
+// Verify verifies signatures
 func Verify(sig *crypto.Signature, addr address.Address, msg []byte) error {
 	if sig == nil {
 		return xerrors.Errorf("signature is nil")
@@ -50,12 +44,7 @@ func Verify(sig *crypto.Signature, addr address.Address, msg []byte) error {
 	return sv.Verify(sig.Data, addr, msg)
 }
 
-/**
- * @Description: Generate generates private key of given type
- * @param sigType
- * @return []byte
- * @return error
- */
+// Generate generates private key of given type
 func Generate(sigType crypto.SigType) ([]byte, error) {
 	sv, ok := sigs[sigType]
 	if !ok {
@@ -65,13 +54,7 @@ func Generate(sigType crypto.SigType) ([]byte, error) {
 	return sv.GenPrivate()
 }
 
-/**
- * @Description: ToPublic converts private key to public key
- * @param sigType
- * @param pk
- * @return []byte
- * @return error
- */
+// ToPublic converts private key to public key
 func ToPublic(sigType crypto.SigType, pk []byte) ([]byte, error) {
 	sv, ok := sigs[sigType]
 	if !ok {
@@ -81,9 +64,7 @@ func ToPublic(sigType crypto.SigType, pk []byte) ([]byte, error) {
 	return sv.ToPublic(pk)
 }
 
-/**
- * @Description: SigShim is used for introducing signature functions
- */
+// SigShim is used for introducing signature functions
 type SigShim interface {
 	GenPrivate() ([]byte, error)
 	ToPublic(pk []byte) ([]byte, error)
@@ -93,11 +74,7 @@ type SigShim interface {
 
 var sigs map[crypto.SigType]SigShim
 
-/**
- * @Description: RegisterSignature should be only used during init
- * @param typ
- * @param vs
- */
+// RegisterSignature should be only used during init
 func RegisterSignature(typ crypto.SigType, vs SigShim) {
 	if sigs == nil {
 		sigs = make(map[crypto.SigType]SigShim)

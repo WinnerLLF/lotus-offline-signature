@@ -12,12 +12,6 @@ import (
 
 type secpSigner struct{}
 
-/**
- * @Description:
- * @receiver secpSigner
- * @return []byte
- * @return error
- */
 func (secpSigner) GenPrivate() ([]byte, error) {
 	priv, err := crypto.GenerateKey()
 	if err != nil {
@@ -26,25 +20,10 @@ func (secpSigner) GenPrivate() ([]byte, error) {
 	return priv, nil
 }
 
-/**
- * @Description:
- * @receiver secpSigner
- * @param pk
- * @return []byte
- * @return error
- */
 func (secpSigner) ToPublic(pk []byte) ([]byte, error) {
 	return crypto.PublicKey(pk), nil
 }
 
-/**
- * @Description:
- * @receiver secpSigner
- * @param pk
- * @param msg
- * @return []byte
- * @return error
- */
 func (secpSigner) Sign(pk []byte, msg []byte) ([]byte, error) {
 	b2sum := blake2b.Sum256(msg)
 	sig, err := crypto.Sign(pk, b2sum[:])
@@ -55,14 +34,6 @@ func (secpSigner) Sign(pk []byte, msg []byte) ([]byte, error) {
 	return sig, nil
 }
 
-/**
- * @Description:
- * @receiver secpSigner
- * @param sig
- * @param a
- * @param msg
- * @return error
- */
 func (secpSigner) Verify(sig []byte, a address.Address, msg []byte) error {
 	b2sum := blake2b.Sum256(msg)
 	pubk, err := crypto.EcRecover(b2sum[:], sig)
@@ -82,9 +53,6 @@ func (secpSigner) Verify(sig []byte, a address.Address, msg []byte) error {
 	return nil
 }
 
-/**
- * @Description:
- */
 func init() {
 	sigs.RegisterSignature(crypto2.SigTypeSecp256k1, secpSigner{})
 }
